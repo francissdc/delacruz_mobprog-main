@@ -5,14 +5,14 @@ import 'action_button.dart';
 import 'custom_text.dart';
 import 'post_image.dart';
 
+
+
 class NewsfeedCard extends StatelessWidget {
   final String userName;
   final String postContent;
   final String date;
   final int? numOfLikes;
   final bool? hasImage;
-  final String? imageAssetPath;
-  final String? avatarAssetPath;
 
   const NewsfeedCard({
     super.key,
@@ -21,142 +21,139 @@ class NewsfeedCard extends StatelessWidget {
     required this.date,
     this.numOfLikes,
     this.hasImage,
-    this.imageAssetPath,
-    this.avatarAssetPath,
   });
 
   @override
   Widget build(BuildContext context) {
-    final sp = ScreenUtil().setSp(10);
-    final w = ScreenUtil().setWidth(10);
-    final userNameSize = ScreenUtil().setSp(15);
-    final iconSize = ScreenUtil().setSp(15);
-    final resolvedImagePath = imageAssetPath ?? 'assets/images/withzuma.jpg'; //
+    final screenUtilSp = ScreenUtil().setSp(10);
+    final screenUtilWidth = ScreenUtil().setWidth(10);
+    final screenUtilFontUserNameSize = ScreenUtil().setSp(15);
+    final screenUtilIconSize = ScreenUtil().setSp(15);
 
     return Card(
-      margin: EdgeInsets.all(sp),
+      margin: EdgeInsets.all(screenUtilSp),
       child: Padding(
-        padding: EdgeInsets.all(sp),
+        padding: EdgeInsets.all(screenUtilSp),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header + Enhancement 2 (User Profile Avatar)
             Row(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                CircleAvatar(
-                  radius: ScreenUtil().radius(20),
-                  backgroundColor: fbLightPrimary,
-                  backgroundImage:
-                      avatarAssetPath != null ? AssetImage(avatarAssetPath!) : null,
-                  child: avatarAssetPath == null
-                      ? Text(
-                          userName.isNotEmpty ? userName[0] : '?',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        )
-                      : null,
-                ),
-                SizedBox(width: w),
+                Icon(Icons.person),
+                SizedBox(width: screenUtilWidth),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomText(
                       text: userName,
-                      fontSize: userNameSize,
+                      fontSize: screenUtilFontUserNameSize,
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
-                    ),
+                    ), // CustomText
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         CustomText(
                           text: date,
                           fontSize: ScreenUtil().setSp(12),
                           color: Colors.grey,
-                        ),
+                        ), // CustomText
                         SizedBox(width: ScreenUtil().setWidth(3)),
-                        Icon(Icons.public, color: Colors.grey, size: iconSize),
+                        Icon(
+                          Icons.public,
+                          color: Colors.grey,
+                          size: screenUtilIconSize,
+                        ), // Icon
                       ],
-                    ),
+                    ), // Row
                   ],
-                ),
-                const Spacer(),
-                const Icon(Icons.more_horiz),
+                ), // Column
+                Spacer(),
+                Icon(Icons.more_horiz),
               ],
-            ),
+            ), // Row
             SizedBox(height: ScreenUtil().setHeight(5)),
-
-            // Post content
+            // post Content
             CustomText(
               text: postContent,
               fontSize: ScreenUtil().setSp(12),
               color: Colors.black,
-            ),
+            ), // CustomText
             SizedBox(height: ScreenUtil().setHeight(5)),
+            hasImage == true
+                ? const Image(image: AssetImage('assets/images/dags.jpg'))
+                : SizedBox.shrink(),
 
-            // Enhancement 1: Dynamic Image Widget
-            if (hasImage == true) PostImage(assetPath: resolvedImagePath),
-
-            // Number of likes only (reactions disregarded)
-            if (numOfLikes != null)
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: ScreenUtil().setHeight(5)),
-                child: CustomText(
-                  text: '$numOfLikes likes',
-                  fontSize: ScreenUtil().setSp(12),
-                  color: Colors.grey,
-                ),
-              ),
-
-            // Enhancement 3: Widget-based Like / Comment / Share
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                ActionButton(icon: Icons.thumb_up, label: 'Like', color: fbPrimary),
-                ActionButton(icon: Icons.comment, label: 'Comment'),
-                ActionButton(icon: Icons.redo, label: 'Share'),
+              children: [
+                TextButton.icon(
+                  onPressed: () {
+                    // print('Like button pressed');
+                  },
+                  icon: Icon(Icons.thumb_up, color: fbPrimary),
+                  label: CustomText(
+                    text: numOfLikes.toString(),
+                    fontSize: ScreenUtil().setSp(12),
+                    color: fbDarkPrimary,
+                  ), // CustomText
+                ), // TextButton.icon
+                CustomText(
+                  text: 'Comment',
+                  fontSize: ScreenUtil().setSp(12),
+                  color: fbDarkPrimary,
+                ), // CustomText
+                TextButton.icon(
+                  onPressed: () {},
+                  icon: Icon(Icons.redo, color: fbDarkPrimary),
+                  label: CustomText(
+                    text: 'Share',
+                    fontSize: ScreenUtil().setSp(12),
+                    color: fbDarkPrimary,
+                  ), // CustomText
+                ), // TextButton.icon
               ],
-            ),
-
-            // Write a comment row
+            ), // Row
             Row(
               children: [
-                CircleAvatar(
-                  radius: ScreenUtil().radius(14),
-                  backgroundColor: fbLightPrimary,
-                  child: const Icon(Icons.person, size: 16, color: Colors.white),
-                ),
-                SizedBox(width: w),
-                Expanded(
-                  child: Container(
-                    padding: EdgeInsets.only(left: w),
-                    alignment: Alignment.centerLeft,
-                    height: ScreenUtil().setHeight(25),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(ScreenUtil().setSp(10)),
-                    ),
-                    child: CustomText(
-                      text: 'Write a comment...',
-                      fontSize: ScreenUtil().setSp(11),
-                      color: Colors.grey,
-                    ),
-                  ),
-                ),
+                Icon(Icons.person),
+                SizedBox(width: ScreenUtil().setWidth(10)),
+                Container(
+                  padding: EdgeInsets.fromLTRB(
+                    ScreenUtil().setWidth(10),
+                    0,
+                    0,
+                    0,
+                  ), // EdgeInsets.fromLTRB
+                  alignment: Alignment.centerLeft,
+                  height: ScreenUtil().setHeight(25),
+                  width: ScreenUtil().setWidth(330),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(ScreenUtil().setSp(10)),
+                    ), // BorderRadius.all
+                  ), // BoxDecoration
+                  child: CustomText(
+                    text: 'Write a comment...',
+                    fontSize: ScreenUtil().setSp(11),
+                    color: Colors.grey,
+                  ), // CustomText
+                ), // Container
               ],
-            ),
+            ), // Row
             SizedBox(height: ScreenUtil().setHeight(10)),
             CustomText(
               text: 'View all comments',
               fontSize: ScreenUtil().setSp(12),
               fontWeight: FontWeight.bold,
               color: Colors.black,
-            ),
+            ), // CustomText
           ],
-        ),
-      ),
-    );
+        ), // Column
+      ), // Padding
+    ); // Card
   }
 }
