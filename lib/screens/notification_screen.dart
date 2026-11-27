@@ -123,7 +123,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
               NotificationWidget(
                 description: 'liked your post.',
                 post: ' Salamat sa suporta!',
-                name: 'LA MAVE',
+                name: 'Nateman Asian',
               ),
             ],
           ), // Column
